@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PayrollManagement.Data.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace PayrollManagement.Data.Models;
 
 public partial class Employee
 {
+	[IgnorePropertyAttirubute]
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;

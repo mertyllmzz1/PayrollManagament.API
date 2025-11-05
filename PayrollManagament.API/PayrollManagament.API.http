@@ -1,6 +1,6 @@
 @PayrollManagament.API_HostAddress = http://localhost:5183
 
-GET {{PayrollManagament.API_HostAddress}}/weatherforecast/
+GET {{PayrollManagament.API_HostAddress}}/swagger/
 Accept: application/json
 
 ###

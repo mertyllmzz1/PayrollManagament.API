@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,21 @@ namespace PayrollManagement.Extentions
 					return  true;
 			}
 			return false;
+		}
+
+		public static Dictionary<string, object> ToDictionary(object obj)
+		{
+			var dict = new Dictionary<string, object>();
+
+			if (obj == null)
+				return dict;
+
+			foreach (PropertyInfo prop in obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+			{
+				dict[prop.Name] = prop.GetValue(obj, null);
+			}
+
+			return dict;
 		}
 
 	}

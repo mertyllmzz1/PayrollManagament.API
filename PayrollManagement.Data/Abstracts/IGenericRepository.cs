@@ -11,7 +11,7 @@ namespace PayrollManagement.Data.Abstracts
 	{
 		Task<IEnumerable<T>> GetAllAsync(string tableName);
 		Task<T?> GetByIdAsync(string tableName, int id, string idColumn);
-		Task<int> AddAsync(string tableName, Dictionary<string, object> parameters);
+		Task<int> AddAsync(T entity, string tableName);
 		Task<bool> UpdateAsync(string tableName, Dictionary<string, object> parameters, string idColumn, int id);
 		Task<bool> DeleteAsync(string tableName, string idColumn, int id);
 	}

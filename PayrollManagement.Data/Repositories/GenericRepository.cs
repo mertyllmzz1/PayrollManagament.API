@@ -1,36 +1,67 @@
-﻿using PayrollManagement.Data.Abstracts;
-using System.Data;
+﻿using Microsoft.Data.SqlClient;
+using PayrollManagement.Data.Abstracts;
+using PayrollManagement.Extentions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
-using PayrollManagement.Extentions;
+using PayrollManagement.Data.Attributes;
 namespace PayrollManagement.Data.Repositories
 {
 	public class GenericRepository<T>:IGenericRepository<T> where T : class, new()
 	{
 		private readonly DataContext _context;
+		private readonly IDbConnection _connection;
 		public GenericRepository(DataContext context)
 		{
 			_context = context;
+			_connection = _context.CreateConnection();
 		}
 
-		public async Task<int> AddAsync(string tableName, Dictionary<string, object> parameters)
+		public async Task<int> AddAsync(T entity, string spName)
 		{
-			using var connection = _context.CreateConnection();
-			var columns = string.Join(", ", parameters.Keys);
-			var values = string.Join(", ", parameters.Keys.Select(k => "@" + k));
+			if (_connection.State != ConnectionState.Open)
+			{
+				if (_connection is System.Data.Common.DbConnection dbConn)
+					await dbConn.OpenAsync();
+				else
+					_connection.Open();
+			}
 
-			var sql = $"INSERT INTO {tableName} ({columns}) VALUES ({values})";
-			using var command = new SqlCommand(sql, (SqlConnection)connection);
+			// Insert edilecek propertyleri seç
+			var props = typeof(T).GetProperties()
+				.Where(p => !p.GetMethod!.IsVirtual) // virtual olanları atla
+				.Where(p => !typeof(IEnumerable).IsAssignableFrom(p.PropertyType) || p.PropertyType == typeof(string)) // ICollection vs atla
+				.Where(p => p.GetCustomAttribute<IgnorePropertyAttirubute>() == null)
+				.ToArray();
 
-			foreach (var p in parameters)
-				command.Parameters.AddWithValue("@" + p.Key, p.Value ?? DBNull.Value);
+			// Kolon isimleri ve parametre isimleri
+			var columnNames = string.Join(", ", props.Select(p => p.Name));
+			var paramNames = string.Join(", ", props.Select(p => "@" + p.Name));
 
-			StartConnection(connection);
-			return await command.ExecuteNonQueryAsync();
+			//var sql = $"INSERT INTO {spName} {paramNames}";
+			var sql = $"exec {spName} {paramNames}";
+
+			using var command = _connection.CreateCommand();
+			command.CommandText = sql;
+
+			foreach (var prop in props)
+			{
+				var value = prop.GetValue(entity) ?? DBNull.Value;
+
+				var parameter = command.CreateParameter();
+				parameter.ParameterName = "@" + prop.Name;
+				parameter.Value = value;
+
+				command.Parameters.Add(parameter);
+			}
+				return await ((DbCommand)command).ExecuteNonQueryAsync();
+			
 		}
 
 		public async Task<bool> DeleteAsync(string tableName, string idColumn, int id)
@@ -73,7 +104,7 @@ namespace PayrollManagement.Data.Repositories
 			using var connection = _context.CreateConnection();
 			using var command = new SqlCommand($"SELECT * FROM {tableName} WHERE {idColumn} = @id", (SqlConnection)connection);
 			command.Parameters.AddWithValue("@id", id);
-			StartConnection(connection);
+			await StartConnection(connection);
 
 			using var reader = await command.ExecuteReaderAsync();
 			var properties = typeof(T).GetProperties();
@@ -107,7 +138,7 @@ namespace PayrollManagement.Data.Repositories
 			StartConnection(connection);
 			return await command.ExecuteNonQueryAsync() > 0;
 		}
-		private async void StartConnection(IDbConnection? connection)
+		private async Task StartConnection(IDbConnection? connection)
 		{
 			await ((SqlConnection)connection).OpenAsync();
 		}
