@@ -124,19 +124,41 @@ namespace PayrollManagement.Data.Repositories
 			return null;
 		}
 
-		public async Task<bool> UpdateAsync(string tableName, Dictionary<string, object> parameters, string idColumn, int id)
+		public async Task<bool> UpdateAsync(string spName,T entity)
 		{
+			if (_connection.State != ConnectionState.Open)
+			{
+				if (_connection is System.Data.Common.DbConnection dbConn)
+					await dbConn.OpenAsync();
+				else
+					_connection.Open();
+			}
+
+			var props = typeof(T).GetProperties()
+				.Where(p => !p.GetMethod!.IsVirtual) // virtual olanları atla
+				.Where(p => !typeof(IEnumerable).IsAssignableFrom(p.PropertyType) || p.PropertyType == typeof(string)) // ICollection vs atla
+				//.Where(p => p.GetCustomAttribute<IgnorePropertyAttirubute>() == null)
+				.ToArray();
 			using var connection = _context.CreateConnection();
-			var setClause = string.Join(", ", parameters.Keys.Select(k => $"{k}=@{k}"));
-			var sql = $"UPDATE {tableName} SET {setClause} WHERE {idColumn}=@id";
 
-			using var command = new SqlCommand(sql, (SqlConnection)connection);
-			foreach (var p in parameters)
-				command.Parameters.AddWithValue("@" + p.Key, p.Value ?? DBNull.Value);
+			var paramNames = string.Join(", ", props.Select(p => "@" + p.Name));
+			var sql = $"exec {spName} {paramNames}";
 
-			command.Parameters.AddWithValue("@id", id);
-			StartConnection(connection);
-			return await command.ExecuteNonQueryAsync() > 0;
+
+			using var command = _connection.CreateCommand();
+			command.CommandText = sql;
+
+			foreach (var prop in props)
+			{
+				var value = prop.GetValue(entity) ?? DBNull.Value;
+
+				var parameter = command.CreateParameter();
+				parameter.ParameterName = "@" + prop.Name;
+				parameter.Value = value;
+
+				command.Parameters.Add(parameter);
+			}
+			return await ((DbCommand)command).ExecuteNonQueryAsync() >0;
 		}
 		private async Task StartConnection(IDbConnection? connection)
 		{

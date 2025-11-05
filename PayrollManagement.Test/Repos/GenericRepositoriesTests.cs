@@ -52,5 +52,24 @@ namespace PayrollManagement.Test.Repos
 			var result = await _repository.GetByIdAsync("Employees", 2, "Id");
 			Assert.NotNull(result);
 		}
+
+		[Fact]
+		public async Task Should_Update_Employee()
+		{
+			var existingEmployee = new Employee
+			{
+				Id= 2,
+				IdentityNo = "11111111111",
+				Name = "Test",
+				Surname = "Tester",
+				CreatedAt = Convert.ToDateTime("05/11/2025"),
+				DailyWage = 1000,
+				Active = true,
+				PayrollType = 2
+			};
+
+			var affected = await _repository.UpdateAsync("UpdateEmployee",existingEmployee);
+			Assert.True(affected);
+		}
 	}
 }

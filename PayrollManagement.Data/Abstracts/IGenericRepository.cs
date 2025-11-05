@@ -9,10 +9,10 @@ namespace PayrollManagement.Data.Abstracts
 {
 	public interface IGenericRepository<T> where T : class
 	{
-		Task<IEnumerable<T>> GetAllAsync(string tableName);
+		Task<IEnumerable<T>> GetAllAsync(string spName);
 		Task<T?> GetByIdAsync(string tableName, int id, string idColumn);
-		Task<int> AddAsync(T entity, string tableName);
-		Task<bool> UpdateAsync(string tableName, Dictionary<string, object> parameters, string idColumn, int id);
-		Task<bool> DeleteAsync(string tableName, string idColumn, int id);
+		Task<int> AddAsync(T entity, string spName);
+		Task<bool> UpdateAsync(string spName, T entity);
+		Task<bool> DeleteAsync(string spName, string idColumn, int id);
 	}
 }
