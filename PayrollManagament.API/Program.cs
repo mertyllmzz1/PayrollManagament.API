@@ -15,13 +15,40 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowSpecificOrigins", policy =>
+	{
+		policy.WithOrigins(
+			"https://app.myweb.com",    
+			"https://setyazilim.com.tr",                     
+		)
+		.AllowAnyHeader()
+		.AllowAnyMethod();
+	});
+
+
+	options.AddPolicy("AllowDev", policy =>
+	{
+		policy
+			.AllowAnyOrigin()
+			.AllowAnyHeader()
+			.AllowAnyMethod();
+	});
+});
+
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {
+	app.UseCors("AllowDev");
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
+else
+	app.UseCors("AllowSpecificOrigins");
 
 //app.UseAuthorization();
 app.MapControllers();
