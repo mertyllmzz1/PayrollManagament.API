@@ -32,7 +32,7 @@
      {"email": "admin", "password": "admin123","twoFactorCode": "string", "twoFactorRecoveryCode": "string"}
 5. token girdikten sonra testler yapılabilir. 
 
-## Erişim
+## Frontend
 Herhangi bir önyüz talebi gelmediğinden yapılmamıştır. CORS ayarları yine de test ve dış dünya için ayrı ayrı girilmiştir.
 
 
