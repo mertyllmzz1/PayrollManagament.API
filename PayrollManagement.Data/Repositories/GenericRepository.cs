@@ -99,10 +99,10 @@ namespace PayrollManagement.Data.Repositories
 			return list;
 		}
 
-		public async Task<T?> GetByIdAsync(string tableName, int id, string idColumn)
+		public async Task<T?> GetByIdAsync(string spName, int id, string idColumn)
 		{
 			using var connection = _context.CreateConnection();
-			using var command = new SqlCommand($"SELECT * FROM {tableName} WHERE {idColumn} = @id", (SqlConnection)connection);
+			using var command = new SqlCommand($"exec {spName}", (SqlConnection)connection);
 			command.Parameters.AddWithValue("@id", id);
 			await StartConnection(connection);
 

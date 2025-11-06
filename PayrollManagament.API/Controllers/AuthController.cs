@@ -14,7 +14,6 @@ namespace PayrollManagament.API.Controllers
 			= new()
 		{
 		("1","admin","admin123","Admin"),
-		("2","operator","op123","Operator")
 		};
 
 		public AuthController(IAuthanticationService authService ,IConfiguration configuration) {

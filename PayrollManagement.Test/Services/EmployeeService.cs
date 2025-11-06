@@ -44,11 +44,11 @@ namespace PayrollManagement.Test.Services
 		{
 
 			var emp = new Employee { Name = "Test", Surname = "User", IdentityNo = "12345678901" };
-			_mockRepo.Setup(r => r.AddAsync(emp, "AddEmployee")).ReturnsAsync(1);
-			var result = await _mockEmployeeService.AddAsync(emp, "AddEmployee");
+			_mockRepo.Setup(r => r.AddAsync(emp, "sp_AddEmployee")).ReturnsAsync(1);
+			var result = await _mockEmployeeService.AddAsync(emp, "sp_AddEmployee");
 
 			Assert.Equal(1, result);
-			_mockRepo.Verify(r => r.AddAsync(emp, "AddEmployee"), Times.Once);
+			_mockRepo.Verify(r => r.AddAsync(emp, "sp_AddEmployee"), Times.Once);
 		}
 		[Fact]
 		public async Task GetAllAsync_ShouldReturnAllEmployees()
@@ -59,10 +59,10 @@ namespace PayrollManagement.Test.Services
 				new Employee { Id = 1, Name = "A", Surname = "B", IdentityNo = "11111111111" },
 				new Employee { Id = 2, Name = "C", Surname = "D", IdentityNo = "22222222222" }
 			};
-			_mockRepo.Setup(r => r.GetAllAsync("GetEmployees")).ReturnsAsync(employees);
+			_mockRepo.Setup(r => r.GetAllAsync("sp_GetEmployees")).ReturnsAsync(employees);
 
 			// Act
-			var result = await _mockEmployeeService.GetAllAsync("GetEmployees");
+			var result = await _mockEmployeeService.GetAllAsync("sp_GetEmployees");
 
 			// Assert
 			Assert.Equal(2, result.Count());
@@ -72,9 +72,9 @@ namespace PayrollManagement.Test.Services
 		public async Task GetByIdAsync_ShouldReturnEmployee()
 		{
 			var emp = new Employee { Id = 1, Name = "Test", Surname = "User", IdentityNo = "12345678901" };
-			_mockRepo.Setup(r => r.GetByIdAsync("GetEmployees", 1, "Id")).ReturnsAsync(emp);
+			_mockRepo.Setup(r => r.GetByIdAsync("sp_GetEmployees", 1, "Id")).ReturnsAsync(emp);
 
-			var result = await _mockEmployeeService.GetByIdAsync("GetEmployees", 1, "Id");
+			var result = await _mockEmployeeService.GetByIdAsync("sp_GetEmployees", 1, "Id");
 			Assert.NotNull(result);
 			Assert.Equal("Test", result.Name);
 		}
@@ -116,7 +116,7 @@ namespace PayrollManagement.Test.Services
 						  .ReturnsAsync(employees);
 
 			// Act: mock service üzerinden çağır
-			var result = await mockService.Object.GetEmployeePeriodicPayroll("GetEmployeePeriodicPayroll", "2025-11");
+			var result = await mockService.Object.GetEmployeePeriodicPayroll("sp_GetEmployeePeriodicPayroll", "2025-11");
 			foreach (var emp in result)
 			{
 				decimal expected = 0;
@@ -130,7 +130,7 @@ namespace PayrollManagement.Test.Services
 		
 			string workPeriod = "2025-11";
 
-			var result = await _employeeService.GetEmployeePeriodicPayroll("GetEmployeePeriodicPayroll", workPeriod);
+			var result = await _employeeService.GetEmployeePeriodicPayroll("sp_GetEmployeePeriodicPayroll", workPeriod);
 
 			Assert.NotNull(result);
 			Assert.NotEmpty(result);
