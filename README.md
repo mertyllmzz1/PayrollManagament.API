@@ -1,4 +1,4 @@
-# PayrollManagement.API(SET Yazılım WebAPI Test Case'i)
+# PayrollManagement.API
 
 ## 🧩 Proje Hakkında
 Çalışanların maaş, günlük ücret ve fazla mesai hesaplamalarını yöneten .NET 8 tabanlı bir API uygulamasıdır.
