@@ -25,7 +25,7 @@ namespace PayrollManagement.Data.Repositories
 
 		public async Task<int> AddAsync(T entity, string spName)
 		{
-			if (_connection.State != ConnectionState.Open)
+				if (_connection.State != ConnectionState.Open)
 			{
 				if (_connection is System.Data.Common.DbConnection dbConn)
 					await dbConn.OpenAsync();
@@ -74,11 +74,11 @@ namespace PayrollManagement.Data.Repositories
 			return await command.ExecuteNonQueryAsync() > 0;
 		}
 
-		public async Task<IEnumerable<T>> GetAllAsync(string tableName)
+		public async Task<IEnumerable<T>> GetAllAsync(string spName)
 		{
 			using var connection = _context.CreateConnection();
-			using var command = new SqlCommand($"SELECT * FROM {tableName}", (SqlConnection)connection);
-			StartConnection(connection);
+			using var command = new SqlCommand($"Exec {spName}", (SqlConnection)connection);
+			await StartConnection(connection);
 
 			var list = new List<T>();
 			using var reader = await command.ExecuteReaderAsync();

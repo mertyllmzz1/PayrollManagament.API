@@ -9,7 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<DataContext>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IEmployeeService,EmployeeService>();
-builder.Services.AddControllers();
+builder.Services.AddScoped<IEmployeeDailyWageService, EmployeeDailyWageService>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -20,8 +22,6 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-
-app.Run();
 
 //app.UseAuthorization();
 app.MapControllers();

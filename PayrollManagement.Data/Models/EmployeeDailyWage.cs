@@ -1,11 +1,15 @@
-﻿using System;
+﻿using PayrollManagement.Data.Attributes;
+using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PayrollManagement.Data.Models;
 
 public partial class EmployeeDailyWage
 {
-    public int Id { get; set; }
+	[IgnorePropertyAttirubute]
+	[JsonIgnore]
+	public int Id { get; set; }
 
     public int EmployeeId { get; set; }
 
@@ -16,8 +20,8 @@ public partial class EmployeeDailyWage
     public short Day { get; set; }
 
     public int DailyTotalWorkingMinute { get; set; }
+	[IgnorePropertyAttirubute]
+	public DateTime CreatedAt { get; set; }
 
-    public DateTime CreatedAt { get; set; }
 
-    public virtual Employee Employee { get; set; } = null!;
 }

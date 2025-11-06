@@ -1,11 +1,13 @@
 ﻿using PayrollManagement.Data.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace PayrollManagement.Data.Models;
 
 public partial class Employee
 {
+    [JsonIgnore]
 	[IgnorePropertyAttirubute]
     public int Id { get; set; }
 
@@ -23,7 +25,4 @@ public partial class Employee
 
     public string IdentityNo { get; set; } = null!;
 
-    public virtual ICollection<EmployeeDailyWage> EmployeeDailyWages { get; set; } = new List<EmployeeDailyWage>();
-
-    public virtual PayrollType PayrollTypeNavigation { get; set; } = null!;
 }

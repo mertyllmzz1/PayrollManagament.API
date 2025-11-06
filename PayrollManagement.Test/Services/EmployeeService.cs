@@ -13,12 +13,14 @@ namespace PayrollManagement.Test.Services
 	public class EmployeeService
 	{
 		private readonly Mock<IGenericRepository<Employee>> _mockRepo;
+		private readonly Mock<IEmployeeRepository> _mockEmployeeRepo;
 		private readonly IEmployeeService _employeeService;
 
 		public EmployeeService()
 		{
 			_mockRepo = new Mock<IGenericRepository<Employee>>();
-			_employeeService = new Service.Implementations.EmployeeService(_mockRepo.Object);
+			_mockEmployeeRepo = new Mock<IEmployeeRepository>();
+			_employeeService = new Service.Implementations.EmployeeService(_mockRepo.Object,_mockEmployeeRepo.Object);
 		}
 
 		[Fact]

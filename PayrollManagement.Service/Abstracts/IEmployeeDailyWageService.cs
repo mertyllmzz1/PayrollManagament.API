@@ -1,5 +1,4 @@
 ﻿using PayrollManagement.Data.Models;
-using PayrollManagement.Data.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace PayrollManagement.Service.Abstracts
 {
-	public interface IEmployeeService:IGenericService<Employee>
+	public interface IEmployeeDailyWageService : IGenericService<EmployeeDailyWage>
 	{
-		Task<IEnumerable<EmployeePayrollDto>> GetEmployeePeriodicPayroll(string spName,string workPeriod);
 	}
 }
