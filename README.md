@@ -22,13 +22,17 @@
 ## 🚀 Erişim
 
 1. Test senaryoları otomatik çalışacak şekilde ayarlanmıştır.
-2. dotnet run ile ayağa kaldırılıp akabinde localhost adresine gidilerek swagger üzerinden testler yapılabilir
-3. JWT Token almak için /login adresine istek atılır çıkan access_token Sağ üstteki Authorize  butonuna tıklanarak çıkan alana yapıştırılır. Başına 'Bearer' eklemeye gerek yok
+2. appsettings.json dosyası içerisinde Connection string adresi kişinin kendi pc'sindeki connection stringi olacak sekilde duzenlenmelidir.  Örnek Olarak:
+ ```bash
+      "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EmployeeManagement;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"
+````
+3. dotnet run ile ayağa kaldırılıp akabinde localhost adresine gidilerek swagger üzerinden testler yapılabilir
+4. JWT Token almak için /login adresine istek atılır çıkan access_token Sağ üstteki Authorize  butonuna tıklanarak çıkan alana yapıştırılır. Başına 'Bearer' eklemeye gerek yok
    ```bash
      {"email": "admin", "password": "admin123","twoFactorCode": "string", "twoFactorRecoveryCode": "string"}
-4 token girdikten sonra testler yapılabilir. 
+5. token girdikten sonra testler yapılabilir. 
 
-## Erişim
+## Frontend
 Herhangi bir önyüz talebi gelmediğinden yapılmamıştır. CORS ayarları yine de test ve dış dünya için ayrı ayrı girilmiştir.
 
 
