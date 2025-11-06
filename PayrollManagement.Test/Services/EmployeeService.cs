@@ -150,6 +150,16 @@ namespace PayrollManagement.Test.Services
 				Assert.Equal(expected, emp.PeriodicWage, 2);
 			}
 		}
+		[Fact]
+		public async Task GetEmployee_FromDB()
+		{
 
+			var result = await _employeeService.GetAllAsync("sp_GetEmployees");
+
+			Assert.NotNull(result);
+			Assert.NotEmpty(result); ;
+			Assert.False(result.Where(p => p.IdentityNo.Substring(0, 7) != "*******").Any(), "Maskelenmemiş TC kimlik bilgisi içeriyor");
+
+		}
 	}
 }
