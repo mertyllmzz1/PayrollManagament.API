@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
 	{
 		policy.WithOrigins(
 			"https://app.myweb.com",    
-			"https://setyazilim.com.tr",                     
+			"https://setyazilim.com.tr"                     
 		)
 		.AllowAnyHeader()
 		.AllowAnyMethod();
