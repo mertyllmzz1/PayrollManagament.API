@@ -23,7 +23,6 @@ namespace PayrollManagement.Service.Implementations
 
 		public Task<int> AddAsync(Employee entity, string spName) => _repo.AddAsync( entity,  spName);
 		public Task<IEnumerable<Employee>> GetAllAsync(string spName) => _repo.GetAllAsync(spName);
-		public Task<Employee?> GetByIdAsync(string tableName, int id, string idColumn) => _repo.GetByIdAsync( tableName, id,  idColumn);
 		public Task<bool> UpdateAsync(Employee entity) => _repo.UpdateAsync("sp_UpdateEmployee", entity); //TODO: generic yapılabilir mi? yoksa kendi classında mı kalmalı?
 		public Task<bool> DeleteAsync(int id) => _repo.DeleteAsync("Delete","Id",id);
 

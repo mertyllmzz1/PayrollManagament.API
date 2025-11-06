@@ -49,12 +49,7 @@ namespace PayrollManagement.Test.Repos
 			Assert.True(affected > 0);
 		}
 
-		//[Fact]
-		//public async Task Should_Get_Employee_By_Id()
-		//{
-		//	var result = await _repository.GetByIdAsync("Employees", 2, "Id");
-		//	Assert.NotNull(result);
-		//}
+
 
 		[Fact]
 		public async Task Should_Update_Employee()

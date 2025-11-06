@@ -99,30 +99,7 @@ namespace PayrollManagement.Data.Repositories
 			return list;
 		}
 
-		public async Task<T?> GetByIdAsync(string spName, int id, string idColumn)
-		{
-			using var connection = _context.CreateConnection();
-			using var command = new SqlCommand($"exec {spName}", (SqlConnection)connection);
-			command.Parameters.AddWithValue("@id", id);
-			await StartConnection(connection);
 
-			using var reader = await command.ExecuteReaderAsync();
-			var properties = typeof(T).GetProperties();
-
-			if (await reader.ReadAsync())
-			{
-				var entity = new T();
-				foreach (var prop in properties)
-				{
-					if (!reader.HasColumn(prop.Name) || reader[prop.Name] is DBNull)
-						continue;
-					prop.SetValue(entity, reader[prop.Name]);
-				}
-				return entity;
-			}
-
-			return null;
-		}
 
 		public async Task<bool> UpdateAsync(string spName,T entity)
 		{

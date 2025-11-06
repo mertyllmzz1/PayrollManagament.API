@@ -29,20 +29,12 @@ namespace PayrollManagament.API.Controllers
 			return Ok(employees);
 		}
 
-		[HttpGet("employees/{id}")]
-		public async Task<ActionResult<Employee>> GetById(int id)
-		{
-			var employee = await _employeeService.GetByIdAsync("sp_GetEmployees", id, "Id");
-			if (employee == null) return NotFound();
-			return Ok(employee);
-		}
-
 		[HttpPost("employees")]
 		public async Task<ActionResult<Employee>> Create(Employee employee)
 		{
 			var result = await _employeeService.AddAsync(employee, "sp_AddEmployee");
 			// CreatedAtAction için ID'nin repository veya SP tarafından set edilmesi gerekir
-			return CreatedAtAction(nameof(GetById), new { id = employee.Id }, employee);
+			return Ok(employee);
 		}
 
 		[HttpGet("payrolls/{month}")]

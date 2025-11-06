@@ -68,16 +68,7 @@ namespace PayrollManagement.Test.Services
 			Assert.Equal(2, result.Count());
 		}
 
-		[Fact]
-		public async Task GetByIdAsync_ShouldReturnEmployee()
-		{
-			var emp = new Employee { Id = 1, Name = "Test", Surname = "User", IdentityNo = "12345678901" };
-			_mockRepo.Setup(r => r.GetByIdAsync("sp_GetEmployees", 1, "Id")).ReturnsAsync(emp);
-
-			var result = await _mockEmployeeService.GetByIdAsync("sp_GetEmployees", 1, "Id");
-			Assert.NotNull(result);
-			Assert.Equal("Test", result.Name);
-		}
+		
 		[Fact]
 		public async Task CalculateSalary_ForAllEmployeeTypes_ShouldReturnCorrectSalary()
 		{
