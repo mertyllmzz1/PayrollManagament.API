@@ -15,7 +15,7 @@ public static class TestConfigBuilder
 		}
 
 		if (dir == null)
-			throw new DirectoryNotFoundException("Solution root (.sln) not found.");
+			throw new DirectoryNotFoundException("Solution root (.sln) bulunamadı.");
 
 		// API projesindeki appsettings.json'u bul
 		var configPath = Path.Combine(dir.FullName, "PayrollManagament.API", "appsettings.json");

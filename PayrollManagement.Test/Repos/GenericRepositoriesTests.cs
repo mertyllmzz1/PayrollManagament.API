@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using PayrollManagement.Data.Models;
 using Microsoft.Extensions.Configuration.Json;
 using PayrollManagement.Extentions;
+using PayrollManagement.Data.Abstracts;
 namespace PayrollManagement.Test.Repos
 {
 	public class GenericRepositoriesTests
 	{
-		private readonly GenericRepository<Employee> _repository;
+		private readonly IGenericRepository<Employee> _repository;
 
 		public GenericRepositoriesTests()
 		{

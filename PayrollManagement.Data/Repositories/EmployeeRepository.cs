@@ -46,7 +46,9 @@ namespace PayrollManagement.Data.Repositories
 					PayrollTypeDescription = reader["PayrollTypeDescription"].ToString() ?? "",
 					DailyWage = Convert.ToDecimal(reader["DailyWage"]),
 					PeriodicWage = Convert.ToDecimal(reader["PeriodicWage"]),
-					IdentityNo = reader["IdentityNo"].ToString() ?? ""
+					IdentityNo = reader["IdentityNo"].ToString() ?? "",
+					OvertimeWork = reader.GetInt32(reader.GetOrdinal("OvertimeWork")),
+					TotalWorkDay = reader.GetInt32(reader.GetOrdinal("TotalWorkDay")),
 				};
 
 

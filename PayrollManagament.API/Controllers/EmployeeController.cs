@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PayrollManagement.Data.Models;
 using PayrollManagement.Service.Abstracts;
 
 namespace PayrollManagament.API.Controllers
 {
+	[Authorize(Roles = "Admin")]
 	[Route("api/Employee")]
 	[ApiController]
-	public class EmployeeController : Controller
+	public class EmployeeController : ControllerBase
 	{
 		private readonly IEmployeeService _employeeService;
 		private readonly IEmployeeDailyWageService _dailyWageService;

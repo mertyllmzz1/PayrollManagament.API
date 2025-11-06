@@ -17,6 +17,9 @@ namespace PayrollManagement.Data.Models.DTO
 		public string PayrollTypeDescription { get; set; } = null!;
 		public decimal DailyWage { get; set; }
 		public decimal PeriodicWage { get; set; }
+		public int OvertimeWork { get; set; }
+		public int TotalWorkDay { get; set; }
+		
 
 	}
 }
