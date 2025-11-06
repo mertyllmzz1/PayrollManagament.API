@@ -8,25 +8,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<DataContext>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IEmployeeService,EmployeeService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IEmployeeDailyWageService, EmployeeDailyWageService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
 builder.Services.AddCors(options =>
 {
+
 	options.AddPolicy("AllowSpecificOrigins", policy =>
 	{
-		policy.WithOrigins(
-			"https://app.myweb.com",    
-			"https://setyazilim.com.tr"                     
-		)
-		.AllowAnyHeader()
-		.AllowAnyMethod();
+		if (allowedOrigins is not null)
+		{
+			policy.WithOrigins(allowedOrigins)
+				.AllowAnyHeader()
+				.AllowAnyMethod();
+		}
 	});
+
 
 
 	options.AddPolicy("AllowDev", policy =>
